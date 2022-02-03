@@ -1,0 +1,27 @@
+package java.todo.domain.task;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+import java.todo.domain.common.DomainData;
+import java.todo.domain.user.User;
+import java.util.List;
+
+public interface Task extends DomainData {
+
+    @Data
+    @AllArgsConstructor
+    class ListItem implements Task {
+        private final Integer id;
+        private final String name;
+    }
+
+    @Data
+    @AllArgsConstructor
+    class Details implements Task {
+        private final Integer id;
+        private final String name;
+        private final List<User.ListItem> users;
+    }
+
+}

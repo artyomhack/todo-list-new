@@ -1,0 +1,9 @@
+**/.key
+**/generated
+**/.gradle
+**/build
+**/dist
+**/out
+.idea
+gradle
+gradlew*
