@@ -1,11 +1,8 @@
 package java.todo.data.task;
 
-import lombok.val;
-
-import java.todo.data.user.UserEntity;
 import java.todo.domain.task.Task;
 import java.todo.domain.task.TaskStore;
-import java.todo.domain.task.TaskRequest;
+import java.todo.domain.task.UserRequest;
 import java.util.stream.StreamSupport;
 
 public class JpaTaskStore implements TaskStore {
@@ -17,12 +14,12 @@ public class JpaTaskStore implements TaskStore {
     }
 
     @Override
-    public Task.Details create( TaskRequest.Data request ) {
+    public Task.Details create( UserRequest.Data request ) {
         return null;
     }
 
     @Override
-    public Task.Details update( Integer id, TaskRequest.Data request ) {
+    public Task.Details update( Integer id, UserRequest.Data request ) {
         return null;
     }
 

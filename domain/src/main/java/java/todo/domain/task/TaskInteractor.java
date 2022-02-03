@@ -11,7 +11,7 @@ public class TaskInteractor {
         this.repository = repository;
     }
 
-    public Either<DomainError, Task.Details> create( TaskRequest.Data request ) {
+    public Either<DomainError, Task.Details> create(UserRequest.Data request ) {
         var task = repository.create( request );
 
         if ( task == null ) {
@@ -21,16 +21,33 @@ public class TaskInteractor {
         return new Either<>( null, task );
     }
 
-    public Either<DomainError, Task.Details> update( Integer id, TaskRequest.Data request ) {
+    public Either<DomainError, Task.Details> update( Integer id, UserRequest.Data request ) {
+        var task = repository.update(id, request);
 
+        if (task == null) {
+            return new Either<>(new DomainError.BadRequest(), null);
+        }
+
+        return new Either<>(null, task);
     }
 
     public Either<DomainError, Iterable<Task.ListItem>> fetchList() {
+        var tasks = repository.findAll();
 
+        for (Task.ListItem task : tasks) {
+            if (task == null)
+                return new Either<>(new DomainError.BadRequest(), null);
+        }
+
+        return new Either<>(null, tasks);
     }
 
-    public Either<DomainError, Task.Details> fetchDetails( Integer id ) {
+    public Either<DomainError, Task.Details> fetchDetails(Integer id ) {
+        var task = repository.findById(id);
 
+        if (task == null) return new Either<>(new DomainError.BadRequest(), null);
+
+        return new Either<>(null, task);
     }
 
 }
