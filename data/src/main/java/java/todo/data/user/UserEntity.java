@@ -37,6 +37,8 @@ public class UserEntity {
     }
 
     public User.ListItem toItem() {
-        return new User.ListItem(id, firstName, lastName, middleName);
+        String fullName = firstName + " " + lastName + " " + middleName;
+
+        return new User.ListItem(id, fullName);
     }
  }

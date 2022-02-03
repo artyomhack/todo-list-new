@@ -1,7 +1,7 @@
 package java.todo.data.user;
 
-import java.todo.domain.task.UserRequest;
 import java.todo.domain.user.User;
+import java.todo.domain.user.UserRequest;
 import java.todo.domain.user.UserStore;
 
 public class JpaUserStore implements UserStore {

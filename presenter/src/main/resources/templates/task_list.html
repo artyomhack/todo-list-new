@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>List of task</title>
+    <link type="text/css" rel="stylesheet" href="/static/app.css"/>
+</head>
+<body>
+<div class="block_menu">
+    <p><a href="/">  Menu </a></p>
+</div>
+<div class="block_create_task">
+    <p><a href="/create_task">Create new task</a></p>
+</div>
+<div class="my-task-class" style="text-align: center;">MY TASK LIST</div>
+<div class="table_class_list">
+    <table>
+        <colgroup>
+            <col span="3" style="text-align: center; background: darkgray">
+            <col style="background: darkgray">
+        </colgroup>
+        <thead>
+        <tr>
+            <th>Label</th>
+            <th>Description</th>
+            <th>Created</th>
+            <th>Deadline</th>
+            <th>Edit task</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="task:${tasks}">
+            <td th:text="${task.label}"></td>
+<!--            <td th:text="${task.description}"></td>-->
+<!--            <td th:text="${task.created}"></td>-->
+<!--            <td th:text="${task.deadline}"></td>-->
+            <td>
+                <a th:href="@{/task/{id}(id=${task.id})}"><img src="../static/image/edit_icon.png"></a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

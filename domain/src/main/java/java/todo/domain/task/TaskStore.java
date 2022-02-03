@@ -1,7 +1,9 @@
 package java.todo.domain.task;
 
+import java.todo.domain.user.UserRequest;
+
 public interface TaskStore {
-    Task.Details create( UserRequest.Data request );
+    Task.Details create(UserRequest.Data request );
 
     Task.Details update( Integer id, UserRequest.Data request );
 

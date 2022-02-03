@@ -3,7 +3,8 @@ package java.todo.domain.task;
 public interface TaskRequest {
 
     class Data implements TaskRequest {
-        private String name;
+        private Integer id;
+        private String label;
     }
 
 }

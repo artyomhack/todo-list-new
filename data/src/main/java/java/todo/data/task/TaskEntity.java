@@ -5,7 +5,6 @@ import lombok.Data;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.Table;
 import java.todo.data.user.UserEntity;
 import java.todo.domain.task.Task;
 import java.util.ArrayList;
@@ -17,7 +16,7 @@ public class TaskEntity {
     @Id
     private Integer id;
 
-    private String name;
+    private String label;
 
     @ManyToMany
     private List<UserEntity> users = new ArrayList<>();
@@ -26,12 +25,12 @@ public class TaskEntity {
     public Task.Details toDetails() {
         return new Task.Details(
                 id,
-                name,
+                label,
                 users.stream().map( UserEntity::toItem ).toList()
         );
     }
 
     public Task.ListItem toItem() {
-        return new Task.ListItem( id, name );
+        return new Task.ListItem( id, label);
     }
 }

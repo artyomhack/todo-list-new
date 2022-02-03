@@ -13,14 +13,14 @@ public interface Task extends DomainData {
     @AllArgsConstructor
     class ListItem implements Task {
         private final Integer id;
-        private final String name;
+        private final String label;
     }
 
     @Data
     @AllArgsConstructor
     class Details implements Task {
         private final Integer id;
-        private final String name;
+        private final String label;
         private final List<User.ListItem> users;
     }
 

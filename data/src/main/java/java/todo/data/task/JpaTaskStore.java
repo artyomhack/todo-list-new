@@ -2,7 +2,7 @@ package java.todo.data.task;
 
 import java.todo.domain.task.Task;
 import java.todo.domain.task.TaskStore;
-import java.todo.domain.task.UserRequest;
+import java.todo.domain.user.UserRequest;
 import java.util.stream.StreamSupport;
 
 public class JpaTaskStore implements TaskStore {

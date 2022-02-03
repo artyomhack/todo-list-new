@@ -2,7 +2,6 @@ package java.todo.domain.user;
 
 import java.todo.domain.common.DomainError;
 import java.todo.domain.common.Either;
-import java.todo.domain.task.UserRequest;
 
 public class UserInteractor {
 
