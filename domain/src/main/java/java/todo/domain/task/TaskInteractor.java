@@ -34,11 +34,6 @@ public class TaskInteractor {
     public Either<DomainError, Iterable<Task.ListItem>> fetchList() {
         var tasks = repository.findAll();
 
-        for (Task.ListItem task : tasks) {
-            if (task == null)
-                return new Either<>(new DomainError.BadRequest(), null);
-        }
-
         return new Either<>(null, tasks);
     }
 

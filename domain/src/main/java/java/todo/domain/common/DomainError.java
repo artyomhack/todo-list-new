@@ -16,4 +16,17 @@ public interface DomainError extends DomainData {
             return "Bad request";
         }
     }
+
+    class NotFound implements DomainError {
+
+        @Override
+        public String getName() {
+            return null;
+        }
+
+        @Override
+        public String getMessage() {
+            return null;
+        }
+    }
 }

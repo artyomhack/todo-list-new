@@ -12,9 +12,7 @@ public interface User {
     @AllArgsConstructor
     class ListItem implements  User {
         private Integer id;
-        private String firstName;
-        private String lastName;
-        private String middleName;
+        private String fullName;
     }
 
     @Data

@@ -6,7 +6,7 @@ import java.todo.domain.task.UserRequest;
 
 public class UserInteractor {
 
-    private UserStore repository;
+    private final UserStore repository;
 
     public UserInteractor(UserStore repository) {
         this.repository = repository;
@@ -30,10 +30,6 @@ public class UserInteractor {
 
     public Either<DomainError.BadRequest, Iterable<User.ListItem>> fetchList() {
         var users = repository.findAllUser();
-
-        for (User.ListItem user : users) {
-            if (user == null) return new Either<>(new DomainError.BadRequest(), null);
-        }
 
         return new Either<>(null, users);
     }
