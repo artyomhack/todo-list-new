@@ -1,10 +1,10 @@
-package java.todo.domain.task;
+package java.todo.domain.models.task;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.todo.domain.common.DomainData;
-import java.todo.domain.user.User;
+import java.todo.domain.models.user.User;
 import java.util.List;
 
 public interface Task extends DomainData {

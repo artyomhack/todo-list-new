@@ -1,4 +1,4 @@
-package java.todo.domain.task;
+package java.todo.domain.models.task;
 
 public interface TaskRequest {
 

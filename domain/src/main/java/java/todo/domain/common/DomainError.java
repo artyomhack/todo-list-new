@@ -1,8 +1,12 @@
 package java.todo.domain.common;
 
+import java.util.Map;
+
 public interface DomainError extends DomainData {
+
     String getName();
     String getMessage();
+
 
     class BadRequest implements DomainError {
 
@@ -21,12 +25,26 @@ public interface DomainError extends DomainData {
 
         @Override
         public String getName() {
-            return null;
+            return this.getClass().getSimpleName();
         }
 
         @Override
         public String getMessage() {
-            return null;
+            return "Not found";
         }
+    }
+
+    class ValidationError implements DomainError {
+
+        @Override
+        public String getName() {
+            return this.getClass().getSimpleName();
+        }
+
+        @Override
+        public String getMessage() {
+            return "Validation error";
+        }
+
     }
 }

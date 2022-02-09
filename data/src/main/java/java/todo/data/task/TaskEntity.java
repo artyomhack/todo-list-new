@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import java.todo.data.user.UserEntity;
-import java.todo.domain.task.Task;
+import java.todo.domain.models.task.Task;
 import java.util.ArrayList;
 import java.util.List;
 

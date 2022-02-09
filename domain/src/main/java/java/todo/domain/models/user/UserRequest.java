@@ -1,7 +1,4 @@
-package java.todo.domain.user;
-
-import lombok.AllArgsConstructor;
-import lombok.Data;
+package java.todo.domain.models.user;
 
 public interface UserRequest {
 

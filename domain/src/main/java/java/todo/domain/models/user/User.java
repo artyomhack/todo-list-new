@@ -1,9 +1,9 @@
-package java.todo.domain.user;
+package java.todo.domain.models.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.todo.domain.task.Task;
+import java.todo.domain.models.task.Task;
 import java.util.List;
 
 public interface User {
@@ -13,6 +13,7 @@ public interface User {
     class ListItem implements  User {
         private Integer id;
         private String fullName;
+
     }
 
     @Data
