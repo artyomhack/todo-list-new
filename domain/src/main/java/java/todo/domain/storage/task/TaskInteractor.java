@@ -15,7 +15,7 @@ public class TaskInteractor {
 
     public Either<DomainError.BadRequest, Task.Details> create(TaskRequest.Data request) {
 
-        var task = repository.createTask(request);
+        var task = repository.create(request);
 
         if (task == null) return new Either<>(new DomainError.BadRequest(), null);
 
@@ -24,7 +24,7 @@ public class TaskInteractor {
 
     public Either<DomainError.NotFound, Task.Details> update(Integer id, TaskRequest.Data request) {
 
-        var task = repository.updateTask(id, request);
+        var task = repository.update(id, request);
 
         if (task == null) return new Either<>(new DomainError.NotFound(), null);
 
@@ -35,49 +35,24 @@ public class TaskInteractor {
 
         //I have to add returned error
 
-        return repository.fetchAllTask();
+        return repository.fetchAll();
     }
 
     public Either<DomainError.NotFound, Task.Details> findTaskById(Integer id) {
 
-        var task = repository.findTaskById(id);
+        var task = repository.fetchById(id);
 
         if (task == null) return new Either<>(new DomainError.NotFound(), null);
 
         return new Either<>(null, task);
     }
 
-    public Either<DomainError.NotFound, Task.Details> getTask() {
-
-        var task = repository.getTask();
-
-        if (task == null) return  new Either<>(new DomainError.NotFound(), null);
-
-        return new Either<>(null, task);
-    }
-
-    public Either<DomainError.ValidationError, Boolean> delete() {
-
-        var isTaskExist = repository.deleteTask();
-
-        return new Either<>(null, isTaskExist);
-    }
-
     public Either<DomainError.NotFound, Boolean> deleteTaskById(Integer id) {
 
-        var isTaskExistById = repository.deleteTaskById(id);
+        var isTaskExistById = repository.removeById(id);
 
         if (id == null) return new Either<>(new DomainError.NotFound(), null);
 
         return new Either<>(null, isTaskExistById);
-    }
-
-    public Either<DomainError.BadRequest, Task.Details> edit(TaskRequest.Data request) {
-
-        var task = repository.editTask(request);
-
-        if (task == null) return new Either<>(new DomainError.BadRequest(), null);
-
-        return new Either<>(null, task);
     }
 }

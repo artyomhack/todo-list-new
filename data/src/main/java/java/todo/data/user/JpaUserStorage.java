@@ -1,54 +1,63 @@
 package java.todo.data.user;
 
+import java.todo.data.task.TaskEntity;
+import java.todo.domain.models.task.Task;
 import java.todo.domain.models.user.User;
 import java.todo.domain.models.user.UserRequest;
 import java.todo.domain.storage.user.UserStorage;
+import java.util.Optional;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 public class JpaUserStorage implements UserStorage {
 
-    private UserRepository repository;
+    private final UserRepository repository;
 
     public JpaUserStorage(UserRepository repository) {
         this.repository = repository;
     }
 
     @Override
-    public User.Details createUser(UserRequest request) {
-        return null;
+    public User.Details create(UserRequest.Data request) {
+
+        return repository.save(UserEntity.of(request)).toDetails();
     }
 
     @Override
-    public User.Details updateUser(Integer id, UserRequest.Data request) {
-        return null;
+    public User.Details update(Integer id, UserRequest.Data request) {
+
+        Optional<UserEntity> user = repository.findById(id);
+
+        return user.get().toDetails();
     }
 
     @Override
-    public Iterable<User.ListItem> fetchAllUser() {
-        return null;
+    public Iterable<User.ListItem> fetchAll() {
+
+        var user = repository.findAll();
+
+        return StreamSupport.stream(user.spliterator(), false)
+                .map(UserEntity::toItem).toList();
     }
 
     @Override
-    public User.Details findUserById(Integer id) {
-        return null;
+    public User.Details findById(Integer id) {
+
+        return repository.findById(id).get().toDetails();
     }
 
     @Override
-    public User.Details getUser() {
-        return null;
-    }
+    public boolean deleteById(Integer id) {
 
-    @Override
-    public boolean deleteUser() {
+        boolean isTaskExist = repository.existsById(id);
+
+        if (isTaskExist) {
+
+            repository.deleteById(id);
+
+            return true;
+        }
+
         return false;
-    }
-
-    @Override
-    public boolean deleteUserById(Integer id) {
-        return false;
-    }
-
-    @Override
-    public User.Details editUser(UserRequest.Data request) {
-        return null;
     }
 }
