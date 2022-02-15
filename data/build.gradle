@@ -1,7 +1,7 @@
 apply plugin: 'java-library'
 
 dependencies {
-    implementation project(":domain")
+    api project(":domain")
 
 
     api platform("org.springframework.boot:spring-boot-dependencies:$springBootVersion")

@@ -1,5 +1,5 @@
 rootProject.name = 'todo-list'
-include(":app")
+include(":application")
 include(':data')
 include(":domain")
 include(":presenter")
