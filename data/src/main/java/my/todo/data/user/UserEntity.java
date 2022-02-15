@@ -15,6 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 public class UserEntity {
     @Id
+    @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String firstName;
@@ -24,7 +25,7 @@ public class UserEntity {
     private String lastName;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "user_task_rel",
+    @JoinTable(name = "usr_task_rel",
             joinColumns = @JoinColumn(name = "task_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )

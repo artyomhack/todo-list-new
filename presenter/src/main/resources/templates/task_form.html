@@ -3,46 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <title>Edit task</title>
-    <link type="text/css" rel="stylesheet" href="/static/app.css"/>
 </head>
 <body>
-<div class="block_menu">
-    <p><a href="/">  Menu </a></p>
-</div>
-<div class="block_lists">
-    <p><a href="/list">Task list</a></p>
-</div>
-<div class="warning" th:unless="${#strings.isEmpty(warning)}" th:text="${warning}"></div>
-<div th:unless="${not #strings.isEmpty(warning)}">
-    <div class="my-task-class" style="text-align: center;">CREATE YOUR TASK</div>
-    <form style="text-align: center" method="post">
-        <label>
-            <input name="id" type="hidden" class="input_text" th:value="${id}"/>
-            <input name="label" type="text" class="input_text" th:value="${label}" placeholder="Label"/>
-<!--            <input name="description" type="text" class="input_text" th:value="${description}" placeholder="Description"/>-->
-            <button type="submit" style="text-align: center">Save</button>
-        </label>
+<div>
+    <form method="post">
+        <div>
+            <input type="text" name="label" th:value="${label}">
+        </div>
+        <div>
+            <input type="hidden" name="id" th:value="${id}">
+        </div>
+        <div>
+            <button type="submit">Сохранить</button>
+            <a th:href="@{/tasks/delete/{id}(id=${id})}" style="color: red; padding: 10px">Удалить</a>
+        </div>
     </form>
-    <div class="last_change">
-        <p><span>Last changes</span></p>
-        <table>
-            <colgroup>
-                <col span="2" style="text-align: center">
-            </colgroup>
-            <thead>
-            <tr>
-                <th>Task</th>
-                <th>Time</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td></td>
-                <td></td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
 </div>
 
 </body>

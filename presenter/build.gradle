@@ -3,5 +3,11 @@ apply plugin: 'java-library'
 dependencies {
     implementation(project(":data"))
     api platform("org.springframework.boot:spring-boot-dependencies:$springBootVersion")
-    implementation("org.springframework:spring-webmvc")
+    api("org.springframework:spring-webmvc")
+    api("org.springframework.boot:spring-boot-starter-thymeleaf")
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+}
+
+tasks.jar {
+    enabled true
 }

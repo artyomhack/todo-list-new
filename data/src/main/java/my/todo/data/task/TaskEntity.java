@@ -15,12 +15,13 @@ import java.util.List;
 @AllArgsConstructor
 public class TaskEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String label;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "user_task_rel",
+    @JoinTable(name = "usr_task_rel",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "task_id")
     )

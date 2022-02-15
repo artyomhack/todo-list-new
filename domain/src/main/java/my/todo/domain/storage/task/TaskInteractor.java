@@ -36,9 +36,9 @@ public class TaskInteractor {
 
     public Either<DomainError, Task.Details> fetchById(Integer id) {
 
-        return repository.fetchById(id)
-                .map(Either::new)
+        return repository.fetchById(id).map(Either::new)
                 .orElse(new Either<>(new DomainError.NotFound()));
+
     }
 
     public Either<DomainError, Boolean> removeById(Integer id) {
