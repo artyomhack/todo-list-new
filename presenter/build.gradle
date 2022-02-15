@@ -1,0 +1,7 @@
+apply plugin: 'java-library'
+
+dependencies {
+    implementation(project(":data"))
+    api platform("org.springframework.boot:spring-boot-dependencies:$springBootVersion")
+    implementation("org.springframework:spring-webmvc")
+}
