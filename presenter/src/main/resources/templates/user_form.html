@@ -3,26 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>User form</title>
-    <link type="text/css" rel="stylesheet" href="/static/app.css"/>
 </head>
 <body>
-<div class="block_menu">
-    <p><a href="/"> Menu </a></p>
-</div>
-<div class="block_lists">
-    <p><a href="/users">User list</a></p>
-</div>
-<div class="warn" th:unless="${#strings.isEmpty(warning)}" th:text="${warning}"></div>
-<div th:unless="${not #strings.isEmpty(warning)}">
-    <div class="my-task-class" style="text-align: center;">CREATE YOUR USER</div>
-    <form style="text-align: center" method="post">
-        <div class="form-inner">
-            <input name="firstName" type="text" class="input_text" th:value="${firstName}" placeholder="First name"/>
-            <input name="lastName" type="text" class="input_text" th:value="${lastName}" placeholder="Last name"/>
-            <input name="middleName" type="text" class="input_text" th:value="${middleName}" placeholder="Middle name"/>
-            <button type="submit" style="text-align: center">save</button>
-        </div>
-    </form>
-</div>
+UserForm
 </body>
 </html>

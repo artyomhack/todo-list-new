@@ -1,6 +1,5 @@
 package my.todo.presenter;
 
-import lombok.val;
 import my.todo.domain.common.DomainError;
 import my.todo.domain.common.Either;
 import my.todo.domain.models.task.Task;
@@ -9,7 +8,10 @@ import my.todo.domain.storage.task.TaskInteractor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Objects;
@@ -38,9 +40,11 @@ public class TaskController {
     @PostMapping( value = "/", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE )
     public ModelAndView showCreateTask( TaskRequest.Data request ) {
         var task = interactor.create( request );
+
         if ( task.hasError() || Objects.isNull( task.getData() ) ) {
             return showTaskForm( task );
         }
+
         return new ModelAndView( "redirect:/tasks/" + task.getData().getId() );
     }
 
@@ -51,7 +55,7 @@ public class TaskController {
     }
 
     @GetMapping( "/delete/{id:[0-9]+}" )
-    public ModelAndView deleteTask( @PathVariable String id ) {
+    public ModelAndView removeTask( @PathVariable String id ) {
         var result = interactor.removeById( Integer.parseInt( id ) );
         if ( result.getData() ) {
             return new ModelAndView( "redirect:/tasks/" );
@@ -98,7 +102,7 @@ public class TaskController {
         }
 
         if ( task.hasError() ) {
-            //** anything mistakes in model
+            //** anything mistakes in the model
         }
 
         model.setViewName( "task_form" );

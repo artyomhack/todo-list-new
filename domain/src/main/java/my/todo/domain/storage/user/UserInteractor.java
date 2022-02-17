@@ -35,14 +35,14 @@ public class UserInteractor {
                 .orElse(new Either<>(new DomainError.BadRequest()));
     }
 
-    public Either<DomainError, User.Details> fetchUserById(Integer id) {
+    public Either<DomainError, User.Details> fetchById(Integer id) {
 
         return repository.fetchById(id)
                 .map(Either::new)
                 .orElse(new Either<>(new DomainError.NotFound()));
     }
 
-    public Either<DomainError, Boolean> deleteUserById(Integer id) {
+    public Either<DomainError, Boolean> removeById(Integer id) {
 
         return Optional.of(repository.removeById(id))
                 .map(Either::new)
