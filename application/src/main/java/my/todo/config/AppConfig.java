@@ -15,17 +15,17 @@ import org.springframework.context.annotation.Configuration;
 public class AppConfig {
 
     @Bean
-    TaskInteractor getTaskInteractor(TaskStorage storage) {
+    TaskInteractor taskInteractor(TaskStorage storage) {
         return new TaskInteractor(storage);
     }
 
     @Bean
-    TaskStorage getTaskStorage(TaskRepository repository) {
+    TaskStorage taskStorage(TaskRepository repository) {
         return new JpaTaskStorage(repository);
     }
 
     @Bean
-    UserInteractor getUserInteractor(UserStorage storage) {
+    UserInteractor getInteractor(UserStorage storage) {
         return new UserInteractor(storage);
     }
 
