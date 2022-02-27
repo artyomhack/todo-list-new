@@ -68,15 +68,15 @@ public class UserController {
 
     @GetMapping("/list")
     public ModelAndView showList() {
-        var dataList = interactor.fetchList();
+        var data = interactor.fetchAll();
 
-        if (dataList.hasError()) {
+        if (data.hasError()) {
             return errorPage(HttpStatus.BAD_REQUEST);
         }
 
         var listView = new ModelAndView();
         listView.setViewName("user_list");
-        listView.getModelMap().addAttribute("users", dataList);
+        listView.getModelMap().addAttribute("users", data.getData());
 
         return listView;
     }
@@ -93,19 +93,23 @@ public class UserController {
     }
 
     private ModelAndView showUserForm(Either<DomainError, User .Details> user) {
-        var model =  new ModelAndView();
+        var model = new ModelAndView();
         var date = user.getData();
 
-        if (user.hasError() && Objects.isNull(user.getData())) {
+        if (user.hasError() && Objects.isNull(date)) {
             return errorPage(HttpStatus.BAD_REQUEST);
 
-        } else if (Objects.nonNull(date)) {
-            model.getModelMap().addAttribute("id", date.getId());
-            model.getModelMap().addAttribute("firstName", date.getFirstName());
-            model.getModelMap().addAttribute("middleName", date.getMiddleName());
-            model.getModelMap().addAttribute("lastName", date.getLastName());
+        }
 
-        } else if (user.hasError()) {
+        if (Objects.nonNull(date)) {
+            model.getModelMap().addAttribute("id", user.getData().getId());
+            model.getModelMap().addAttribute("firstName", user.getData().getFirstName());
+            model.getModelMap().addAttribute("middleName", user.getData().getMiddleName());
+            model.getModelMap().addAttribute("lastName", user.getData().getLastName());
+
+        }
+
+        if (user.hasError()) {
             /*
             Anything mistakes in the model
              */

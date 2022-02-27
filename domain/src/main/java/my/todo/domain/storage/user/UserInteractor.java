@@ -4,6 +4,8 @@ import my.todo.domain.models.user.User;
 import my.todo.domain.common.DomainError;
 import my.todo.domain.common.Either;
 import my.todo.domain.models.user.UserRequest;
+
+import java.util.List;
 import java.util.Optional;
 
 public class UserInteractor {
@@ -28,11 +30,9 @@ public class UserInteractor {
                 .orElse(new Either<>(new DomainError.NotFound(), null));
     }
 
-    public Either<DomainError, Iterable<User.ListItem>> fetchList() {
+    public Either<DomainError, List<User.ListItem>> fetchAll() {
 
-        return Optional.of(repository.fetchAll())
-                .map(Either::new)
-                .orElse(new Either<>(new DomainError.BadRequest()));
+        return new Either<>(repository.fetchAll());
     }
 
     public Either<DomainError, User.Details> fetchById(Integer id) {

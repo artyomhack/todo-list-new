@@ -2,6 +2,8 @@ package my.todo.domain.storage.user;
 
 import my.todo.domain.models.user.User;
 import my.todo.domain.models.user.UserRequest;
+
+import java.util.List;
 import java.util.Optional;
 
 
@@ -11,7 +13,7 @@ public interface UserStorage {
 
     Optional<User.Details> update(Integer id, UserRequest.Data request);
 
-    Iterable<User.ListItem> fetchAll();
+    List<User.ListItem> fetchAll();
 
     Optional<User.Details> fetchById(Integer id);
 

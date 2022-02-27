@@ -33,4 +33,5 @@ public class AppConfig {
     UserStorage getUserStorage(UserRepository repository) {
         return new JpaUserStorage(repository);
     }
+
 }
