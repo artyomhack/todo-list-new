@@ -9,11 +9,20 @@
 <div>
     <table>
         <tr th:each="task:${tasks}">
-            <td th:text="${task.getLabel()}"></td>
-            <td><a th:href="@{/tasks/{id}(id=${task.getId()})}"> Изменить </a></td>
-            <td><a th:href="@{/tasks/list/delete/{id}(id=${task.getId()})}" style="color: red"> Удалить </a></td>
+            <td th:text="${task.getLabel()}"style="border: 1px solid gray;
+             border-collapse: collapse"></td>
+            <td><a th:href="@{/tasks/{id}(id=${task.getId()})}" style="border: 1px solid gray;
+            border-collapse: collapse"> Изменить </a></td>
+            <td><a th:href="@{/tasks/list/delete/{id}(id=${task.getId()})}" style="border: 1px solid gray;
+             border-collapse: collapse; color: red"> Удалить </a></td>
         </tr>
     </table>
+</div>
+<div>
+    <p><a href="/tasks/" style="font-size: 22px; padding: 5px">Edit task</a></p>
+</div>
+<div>
+    <p><a href="/" style="font-size: 22px; padding: 5px">Menu</a></p>
 </div>
 </body>
 </html>
