@@ -3,6 +3,7 @@ package my.todo.data.user;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import my.todo.data.task.TaskEntity;
+import my.todo.domain.models.task.TaskRequest;
 import my.todo.domain.models.user.User;
 import my.todo.domain.models.user.UserRequest;
 
@@ -30,7 +31,7 @@ public class UserEntity {
             joinColumns = @JoinColumn(name = "task_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
-    private List<TaskEntity> tasks = new ArrayList<>();
+    private List<TaskEntity> tasks;
 
     public UserEntity() {}
 
@@ -53,6 +54,15 @@ public class UserEntity {
         String fullName = firstName + " " + middleName + " " + lastName;
 
         return new User.ListItem(id, fullName);
+    }
+
+    public void addTaskToUser(TaskRequest.Data request) {
+        if (request == null) {
+            tasks = new ArrayList<>();
+        }
+        assert request != null;
+
+        tasks.add(TaskEntity.of(request));
     }
 
     public static UserEntity of(UserRequest.Data request) {

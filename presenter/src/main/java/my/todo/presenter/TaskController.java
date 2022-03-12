@@ -19,6 +19,7 @@ import java.util.Objects;
 @Controller
 @RequestMapping( "/tasks" )
 public class TaskController {
+
     private final TaskInteractor interactor;
 
     public TaskController( TaskInteractor interactor ) {
@@ -78,14 +79,14 @@ public class TaskController {
         return listView;
     }
 
-    @GetMapping( "/list/delete/{id:[0-9]+}" )
+    @GetMapping("/list/delete/{id:[0-9]+}")
     public ModelAndView deleteListTask( @PathVariable String id ) {
-        var result = interactor.removeById( Integer.parseInt( id ) );
-        if ( result.getData() ) {
-            return new ModelAndView( "redirect:/tasks/list" );
+        var result = interactor.removeById(Integer.parseInt(id));
+        if (result.getData()) {
+            return new ModelAndView("redirect:/tasks/list");
         }
 
-        return errorPage( HttpStatus.BAD_REQUEST );
+        return errorPage(HttpStatus.BAD_REQUEST);
     }
 
     private ModelAndView showTaskForm( Either<DomainError, Task.Details> task ) {
@@ -96,9 +97,10 @@ public class TaskController {
             return errorPage( HttpStatus.BAD_REQUEST );
         }
 
-        if ( Objects.nonNull( data ) ) {
+        if ( Objects.nonNull(data) ) {
             model.getModelMap().addAttribute( "id", task.getData().getId() );
             model.getModelMap().addAttribute( "label", task.getData().getLabel() );
+
         }
 
         if ( task.hasError() ) {

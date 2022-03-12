@@ -1,8 +1,10 @@
 package my.todo.data.user;
 
+import my.todo.domain.models.task.TaskRequest;
 import my.todo.domain.models.user.User;
 import my.todo.domain.models.user.UserRequest;
 import my.todo.domain.storage.user.UserStorage;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
@@ -59,4 +61,15 @@ public class JpaUserStorage implements UserStorage {
 
         return false;
     }
+
+    @Override
+    public Optional<User.Details> addTaskToUser(UserRequest.Data userRequest,
+                                                TaskRequest.Data taskRequest) {
+
+        var user = repository.save(UserEntity.of(userRequest));
+        user.addTaskToUser(taskRequest);
+
+        return Optional.of(user.toDetails());
+    }
+
 }

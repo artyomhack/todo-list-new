@@ -14,6 +14,7 @@ import java.util.List;
 @Entity(name = "task")
 @AllArgsConstructor
 public class TaskEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

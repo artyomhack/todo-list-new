@@ -1,8 +1,9 @@
 package my.todo.domain.storage.user;
 
-import my.todo.domain.models.user.User;
 import my.todo.domain.common.DomainError;
 import my.todo.domain.common.Either;
+import my.todo.domain.models.task.TaskRequest;
+import my.todo.domain.models.user.User;
 import my.todo.domain.models.user.UserRequest;
 
 import java.util.List;
@@ -47,5 +48,11 @@ public class UserInteractor {
         return Optional.of(repository.removeById(id))
                 .map(Either::new)
                 .orElse(new Either<>(new DomainError.NotFound(), null));
+    }
+
+    public Either<DomainError, User.Details> addTaskToUser(UserRequest.Data userRequest,
+                                                           TaskRequest.Data taskRequest) {
+        return repository.addTaskToUser(userRequest, taskRequest).map(Either::new)
+                .orElse(new Either<>(new DomainError.BadRequest(), null));
     }
 }

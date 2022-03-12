@@ -48,4 +48,5 @@ public class TaskInteractor {
         }
         return new Either<>(new DomainError.BadRequest());
     }
+
 }

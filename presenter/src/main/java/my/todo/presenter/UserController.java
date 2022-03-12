@@ -92,7 +92,8 @@ public class UserController {
         return errorPage(HttpStatus.BAD_REQUEST);
     }
 
-    private ModelAndView showUserForm(Either<DomainError, User .Details> user) {
+
+    private ModelAndView showUserForm(Either<DomainError, User.Details> user) {
         var model = new ModelAndView();
         var date = user.getData();
 
