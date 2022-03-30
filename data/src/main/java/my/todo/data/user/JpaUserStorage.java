@@ -67,7 +67,8 @@ public class JpaUserStorage implements UserStorage {
                                                 TaskRequest.Data taskRequest) {
 
         var user = repository.save(UserEntity.of(userRequest));
-        user.addTaskToUser(taskRequest);
+
+        user.addTask(taskRequest);
 
         return Optional.of(user.toDetails());
     }

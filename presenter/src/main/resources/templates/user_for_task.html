@@ -6,27 +6,22 @@
 </head>
 <body>
 <div>
-    <form method="post">
+    <form method="post" >
         <div>
-            <input type="text" name="firstName" th:value="${firstName}"
-                   placeholder="First name" style="margin-bottom: 10px">
+            <input name="firstName" type="text" class="input_text" th:value="${firstName}" placeholder="First name"/>
         </div>
         <div>
-            <input type="text" name="middleName" th:value="${middleName}"
-                   placeholder="Middle name" style="margin-bottom: 10px">
+            <input name="lastName" type="text" class="input_text" th:value="${lastName}" placeholder="Last name"/>
         </div>
         <div>
-            <input type="text" name="lastName" th:value="${lastName}"
-                   placeholder="Last name" style="margin-bottom: 10px">
+            <input name="middleName" type="text" class="input_text" th:value="${middleName}" placeholder="Middle name"/>
         </div>
         <div>
-            <input type="text" name="task" th:value="${task}"
-            placeholder="Task" style="margin-bottom: 10px">
+
         </div>
         <div>
             <button type="submit">Сохранить</button>
-            <a th:href="@{/add_user_for_task/delete/{id}(id=${id})}" style="color: red;
-            padding: 10px">Удалить</a>
+            <a th:href="@{/users/n/{id}(id=${id})}" style="color: red; padding: 10px">Удалить</a>
         </div>
     </form>
 </div>

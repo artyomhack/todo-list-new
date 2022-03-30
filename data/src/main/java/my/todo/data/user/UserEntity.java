@@ -56,13 +56,11 @@ public class UserEntity {
         return new User.ListItem(id, fullName);
     }
 
-    public void addTaskToUser(TaskRequest.Data request) {
-        if (request == null) {
-            tasks = new ArrayList<>();
-        }
-        assert request != null;
+    public void addTask(TaskRequest.Data request) {
+        var task = TaskEntity.of(request);
 
-        tasks.add(TaskEntity.of(request));
+        this.tasks.add(task);
+        task.getUsers().add(this);
     }
 
     public static UserEntity of(UserRequest.Data request) {
