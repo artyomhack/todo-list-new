@@ -7,21 +7,16 @@
 <body>
 <div>
     <form method="post" >
-        <div>
-            <input name="firstName" type="text" class="input_text" th:value="${firstName}" placeholder="First name"/>
-        </div>
-        <div>
-            <input name="lastName" type="text" class="input_text" th:value="${lastName}" placeholder="Last name"/>
-        </div>
-        <div>
-            <input name="middleName" type="text" class="input_text" th:value="${middleName}" placeholder="Middle name"/>
-        </div>
-        <div>
 
+
+        <div>
+            <input name="label" type="text" th:value="${label}" placeholder="Описание задачи">
         </div>
         <div>
-            <button type="submit">Сохранить</button>
-            <a th:href="@{/users/n/{id}(id=${id})}" style="color: red; padding: 10px">Удалить</a>
+            <p style="border: 1px black solid; width: 175px" >Срок</p>
+        </div>
+        <div>
+            <button type="submit" style="margin-left: 100px">Добавить</button>
         </div>
     </form>
 </div>

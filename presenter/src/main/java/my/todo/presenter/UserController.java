@@ -6,6 +6,7 @@ import my.todo.domain.models.task.Task;
 import my.todo.domain.models.task.TaskRequest;
 import my.todo.domain.models.user.User;
 import my.todo.domain.models.user.UserRequest;
+import my.todo.domain.storage.task.TaskInteractor;
 import my.todo.domain.storage.user.UserInteractor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -22,15 +23,17 @@ import java.util.Objects;
 @RequestMapping("/users")
 public class UserController {
 
-    private final UserInteractor interactor;
+    private final UserInteractor userInteractor;
+    private final TaskInteractor taskInteractor;
 
-    public UserController(UserInteractor interactor) {
-        this.interactor = interactor;
+    public UserController(UserInteractor userInteractor, TaskInteractor taskInteractor) {
+        this.userInteractor = userInteractor;
+        this.taskInteractor = taskInteractor;
     }
 
     @GetMapping("/{id:[0-9]+}")
     public ModelAndView getUser(@PathVariable String id, ModelAndView model) {
-        return showUserForm(interactor.fetchById(Integer.parseInt(id)));
+        return showUserForm(userInteractor.fetchById(Integer.parseInt(id)));
     }
 
     @GetMapping("/")
@@ -40,7 +43,7 @@ public class UserController {
 
     @PostMapping(value = "/", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public ModelAndView showCreateUser(UserRequest.Data request) {
-        var user = interactor.create(request);
+        var user = userInteractor.create(request);
 
         if (user.hasError() || Objects.isNull(user.getData())) {
             return showUserForm(user);
@@ -51,7 +54,7 @@ public class UserController {
 
     @PostMapping(value = "/{id:[0-9]+}", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public ModelAndView updateUser(@PathVariable String id, UserRequest.Data request) {
-        var user = interactor.update(Integer.parseInt(id), request);
+        var user = userInteractor.update(Integer.parseInt(id), request);
 
         return showUserForm(user);
 
@@ -59,7 +62,7 @@ public class UserController {
 
     @GetMapping("/delete/{id:[0-9]+}")
     public ModelAndView removeUser(@PathVariable String id) {
-        var user = interactor.removeById(Integer.parseInt(id));
+        var user = userInteractor.removeById(Integer.parseInt(id));
 
         if (user.getData()) {
             return new ModelAndView("redirect:/users/");
@@ -70,7 +73,7 @@ public class UserController {
 
     @GetMapping("/list")
     public ModelAndView showList() {
-        var data = interactor.fetchAll();
+        var data = userInteractor.fetchAll();
 
         if (data.hasError()) {
             return errorPage(HttpStatus.BAD_REQUEST);
@@ -85,7 +88,7 @@ public class UserController {
 
     @GetMapping("/list/delete/{id:[0-9]+}")
     public ModelAndView removeById(@PathVariable String id) {
-        var result = interactor.removeById(Integer.parseInt(id));
+        var result = userInteractor.removeById(Integer.parseInt(id));
 
         if (result.getData()) {
             return new ModelAndView("redirect:/users/list");
@@ -94,22 +97,21 @@ public class UserController {
         return errorPage(HttpStatus.BAD_REQUEST);
     }
 
-    @GetMapping("/addTask")
-    public ModelAndView showAddTaskToUser() {
-        return showFormAddTaskToUser(new Either<>(null,null), new Either<>(null, null));
+    @GetMapping("/createTask")
+    public ModelAndView showCreateTaskForUser() {
+        return showTaskForUser(new Either<>(null, null));
     }
 
-    @PostMapping(value = "/addTask", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public ModelAndView addTaskToUser(UserRequest.Data user, TaskRequest.Data task) {
-        var result = interactor.addTaskToUser(user, task);
+    @PostMapping(value = "/createTask", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public ModelAndView createTaskForUser(TaskRequest.Data request) {
+        var task = taskInteractor.create(request);
 
-        if (result.hasError() || Objects.isNull(result.getData())) {
-            return showFormAddTaskToUser( );
+        if (task.hasError() || Objects.isNull(task.getData())) {
+            return showTaskForUser(task);
         }
 
-        return new ModelAndView("redirect:/users/n/" + result.getData().getId());
+        return new ModelAndView("redirect:/users/createTask/" + task.getData().getId());
     }
-
 
 
     private ModelAndView showUserForm(Either<DomainError, User.Details> user) {
@@ -139,26 +141,23 @@ public class UserController {
         return model;
     }
 
-    private ModelAndView showFormAddTaskToUser(Either<DomainError, User.Details> user, Either<DomainError, Task.Details> task) {
+    private ModelAndView showTaskForUser(Either<DomainError, Task.Details> task) {
         var model = new ModelAndView();
+        var data = task.getData();
+        var isError = task.hasError();
 
-        if (user.hasError() && Objects.isNull(user.getData())
-                || task.hasError() && Objects.isNull(task.getData())) {
+        if (isError && Objects.isNull(data)) {
             return errorPage(HttpStatus.BAD_REQUEST);
         }
 
-        if (Objects.nonNull(user.getData())) {
-            model.getModelMap().addAttribute("id_user", user.getData().getId());
-            model.getModelMap().addAttribute("firstName", user.getData().getFirstName());
-            model.getModelMap().addAttribute("middleName", user.getData().getMiddleName());
-            model.getModelMap().addAttribute("lastName", user.getData().getLastName());
-            model.getModelMap().addAttribute("tasks", user.getData().getTasks());
-
+        if (Objects.nonNull(data)) {
+            model.getModelMap().addAttribute("id_task", data.getId());
+            model.getModelMap().addAttribute("label", data.getLabel());
         }
 
-        if (user.hasError()) {
-             /*
-            Anything mistakes in the model
+        if (isError) {
+            /*
+            Anything mistake in the model
              */
         }
 
