@@ -1,6 +1,5 @@
 package my.todo.presenter;
 
-import lombok.val;
 import my.todo.domain.common.DomainError;
 import my.todo.domain.common.Either;
 import my.todo.domain.models.task.Task;
@@ -89,41 +88,39 @@ public class UserController {
 
     @GetMapping( "/list/delete/{id:[0-9]+}" )
     public ModelAndView removeById( @PathVariable String id ) {
-        var result = userInteractor.removeById( Integer.parseInt( id ) );
+        var result = userInteractor.removeById(Integer.parseInt(id));
 
-        if ( result.getData() ) {
-            return new ModelAndView( "redirect:/users/list" );
+        if (result.getData()) {
+            return new ModelAndView("redirect:/users/list");
         }
 
-        return errorPage( HttpStatus.BAD_REQUEST );
-    }
-
-    @GetMapping( "/createTask" )
-    public ModelAndView showCreateTaskForUser() {
-        return showTaskForUser( new Either<>( null, null ) );
+        return errorPage(HttpStatus.BAD_REQUEST);
     }
 
     @PostMapping( value = "/{id:[0-9]+}/createTask", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE )
-    public ModelAndView createTaskForUser( @PathVariable String id, TaskRequest.Data request ) {
+    public ModelAndView createTaskForUser(@PathVariable() String id, TaskRequest.Data request ) {
 
-        var userData = userInteractor.addTaskToUser( Integer.parseInt( id ), request );
-        if ( !userData.hasError() ) {
-            return showUserForm( userData );
+        var user = userInteractor.addTaskToUser(Integer.parseInt(id), request);
+        var task = taskInteractor.create(request);
+
+        if (!user.hasError()) {
+            return showTaskAndUserForm(user, task);
         }
 
-        return errorPage( HttpStatus.BAD_REQUEST );
+        return errorPage(HttpStatus.BAD_REQUEST);
     }
 
     private ModelAndView showUserForm( Either<DomainError, User.Details> user ) {
         var model = new ModelAndView();
-        var date = user.getData();
+        var data = user.getData();
 
-        if ( user.hasError() || Objects.isNull( date ) ) {
+
+        if ( user.hasError()) {
             return errorPage( HttpStatus.BAD_REQUEST );
 
         }
 
-        if ( Objects.nonNull( date ) ) {
+        if ( Objects.nonNull(data) ) {
             model.getModelMap().addAttribute( "id", user.getData().getId() );
             model.getModelMap().addAttribute( "firstName", user.getData().getFirstName() );
             model.getModelMap().addAttribute( "middleName", user.getData().getMiddleName() );
@@ -131,37 +128,31 @@ public class UserController {
 
         }
 
-        if ( user.hasError() ) {
-            /*
-            Anything mistakes in the model
-             */
-        }
-
         model.setViewName( "user_form" );
         return model;
     }
 
-    private ModelAndView showTaskForUser( Either<DomainError, Task.Details> task ) {
+    private ModelAndView showTaskAndUserForm(Either<DomainError, User.Details> user, Either<DomainError, Task.Details> task) {
         var model = new ModelAndView();
-        var data = task.getData();
-        var isError = task.hasError();
+        var dataUser = user.getData();
+        var dataTask = task.getData();
 
-        if ( isError && Objects.isNull( data ) ) {
-            return errorPage( HttpStatus.BAD_REQUEST );
+        if (user.hasError()) {
+            return errorPage(HttpStatus.BAD_REQUEST);
         }
 
-        if ( Objects.nonNull( data ) ) {
-            model.getModelMap().addAttribute( "id_task", data.getId() );
-            model.getModelMap().addAttribute( "label", data.getLabel() );
+        if (Objects.nonNull(dataUser) && Objects.nonNull(dataTask)) {
+            model.getModelMap().addAttribute("id", dataUser.getId());
+            model.getModelMap().addAttribute("firstName", dataUser.getFirstName());
+            model.getModelMap().addAttribute("lastName", dataUser.getLastName());
+            model.getModelMap().addAttribute("middleName", dataUser.getMiddleName());
+            model.getModelMap().addAttribute("tasksForUser", dataUser.getTasks());
+
+            model.getModelMap().addAttribute("id_task", dataTask.getId());
+            model.getModelMap().addAttribute("label", dataTask.getLabel());
         }
 
-        if ( isError ) {
-            /*
-            Anything mistake in the model
-             */
-        }
-
-        model.setViewName( "user_for_task" );
+        model.setViewName("user_form");
         return model;
     }
 

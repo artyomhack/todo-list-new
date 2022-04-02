@@ -8,6 +8,9 @@
 <body>
 <form method="post">
     <div>
+        <p th:text="'ID: ' + ${id}"></p>
+    </div>
+    <div>
         <input name="firstName" type="text" class="input_text" th:value="${firstName}" placeholder="First name"/>
     </div>
     <div>
@@ -19,6 +22,29 @@
     <div>
         <button type="submit">Сохранить</button>
         <a th:href="@{/users/delete/{id}(id=${id})}" style="color: red; padding: 10px">Удалить</a>
+    </div>
+    <div>
+        <tr>
+
+        </tr>
+    </div>
+</form>
+<form  method="post" th:if="${id} != null" action="#" th:action="@{/users/__${id}__/createTask}" th:object="${id}">
+    <div>
+        <input name="label" type="text" class="input_text" th:value="${label}" placeholder="Создать задачу"
+               style="margin-top: 20px">
+        <p style="border: 1px gray solid; width: 175px;">Срок задачи</p>
+        <button type="submit">Добавить</button>
+    </div>
+</form>
+
+<form method="post"  th:if="${id_task!= null}" action="#" th:action="@{/users/__${id}__/createTask}" th:object="${id_task}">
+    <div>
+        <table>
+            <tr th:each="task:${tasksForUser}">
+                <td th:text="${task.getLabel}" style="border: 1px gray solid; border-collapse: collapse"></td>
+            </tr>
+        </table>
     </div>
 </form>
 <div>

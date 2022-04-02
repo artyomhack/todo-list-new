@@ -13,7 +13,7 @@ public class UserInteractor {
 
     private final UserStorage repository;
 
-    public UserInteractor( UserStorage repository ) {
+    public UserInteractor(UserStorage repository) {
         this.repository = repository;
     }
 
