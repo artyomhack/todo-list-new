@@ -30,8 +30,8 @@ public class AppConfig {
     }
 
     @Bean
-    UserStorage getUserStorage(UserRepository repository) {
-        return new JpaUserStorage(repository);
+    UserStorage getUserStorage(UserRepository userRepository, TaskRepository taskRepository) {
+        return new JpaUserStorage(userRepository, taskRepository);
     }
 
 }

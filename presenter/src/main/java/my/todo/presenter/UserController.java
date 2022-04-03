@@ -2,7 +2,6 @@ package my.todo.presenter;
 
 import my.todo.domain.common.DomainError;
 import my.todo.domain.common.Either;
-import my.todo.domain.models.task.Task;
 import my.todo.domain.models.task.TaskRequest;
 import my.todo.domain.models.user.User;
 import my.todo.domain.models.user.UserRequest;
@@ -11,10 +10,7 @@ import my.todo.domain.storage.user.UserInteractor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Objects;
@@ -65,7 +61,7 @@ public class UserController {
         var user = userInteractor.removeById( Integer.parseInt( id ) );
 
         if ( user.getData() ) {
-            return new ModelAndView( "redirect:/users/" );
+            return new ModelAndView( "redirect:/users/");
         }
 
         return errorPage( HttpStatus.BAD_REQUEST );
@@ -86,7 +82,7 @@ public class UserController {
         return listView;
     }
 
-    @GetMapping( "/list/delete/{id:[0-9]+}" )
+    @GetMapping("/list/delete/{id:[0-9]+}")
     public ModelAndView removeById( @PathVariable String id ) {
         var result = userInteractor.removeById(Integer.parseInt(id));
 
@@ -97,14 +93,24 @@ public class UserController {
         return errorPage(HttpStatus.BAD_REQUEST);
     }
 
-    @PostMapping( value = "/{id:[0-9]+}/createTask", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE )
-    public ModelAndView createTaskForUser(@PathVariable() String id, TaskRequest.Data request ) {
+    @GetMapping("/{userId:[0-9]+}/deleteTask/{taskId:[0-9]+}")
+    public ModelAndView deleteTaskForUser(@PathVariable String userId, @PathVariable String taskId) {
+        var result = userInteractor.removeTaskForUser(Integer.parseInt(userId), Integer.parseInt(taskId));
 
-        var user = userInteractor.addTaskToUser(Integer.parseInt(id), request);
-        var task = taskInteractor.create(request);
+        if (result.getData()) {
+            return new ModelAndView("redirect:/users/" + userId);
+        }
+
+        return errorPage(HttpStatus.BAD_REQUEST);
+    }
+
+    @PostMapping( value = "/{userId:[0-9]+}/createTask", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE )
+    public ModelAndView createTaskForUser(@PathVariable String userId, TaskRequest.Data request ) {
+        request.setId(null);
+        var user = userInteractor.addTaskToUser(Integer.parseInt(userId), request);
 
         if (!user.hasError()) {
-            return showTaskAndUserForm(user, task);
+            return new ModelAndView("redirect:/users/" + userId);
         }
 
         return errorPage(HttpStatus.BAD_REQUEST);
@@ -125,34 +131,11 @@ public class UserController {
             model.getModelMap().addAttribute( "firstName", user.getData().getFirstName() );
             model.getModelMap().addAttribute( "middleName", user.getData().getMiddleName() );
             model.getModelMap().addAttribute( "lastName", user.getData().getLastName() );
+            model.getModelMap().addAttribute("tasks", user.getData().getTasks());
 
         }
 
         model.setViewName( "user_form" );
-        return model;
-    }
-
-    private ModelAndView showTaskAndUserForm(Either<DomainError, User.Details> user, Either<DomainError, Task.Details> task) {
-        var model = new ModelAndView();
-        var dataUser = user.getData();
-        var dataTask = task.getData();
-
-        if (user.hasError()) {
-            return errorPage(HttpStatus.BAD_REQUEST);
-        }
-
-        if (Objects.nonNull(dataUser) && Objects.nonNull(dataTask)) {
-            model.getModelMap().addAttribute("id", dataUser.getId());
-            model.getModelMap().addAttribute("firstName", dataUser.getFirstName());
-            model.getModelMap().addAttribute("lastName", dataUser.getLastName());
-            model.getModelMap().addAttribute("middleName", dataUser.getMiddleName());
-            model.getModelMap().addAttribute("tasksForUser", dataUser.getTasks());
-
-            model.getModelMap().addAttribute("id_task", dataTask.getId());
-            model.getModelMap().addAttribute("label", dataTask.getLabel());
-        }
-
-        model.setViewName("user_form");
         return model;
     }
 

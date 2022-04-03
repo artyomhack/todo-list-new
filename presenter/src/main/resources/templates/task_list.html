@@ -13,7 +13,7 @@
              border-collapse: collapse"></td>
             <td><a th:href="@{/tasks/{id}(id=${task.getId()})}" style="border: 1px solid gray;
             border-collapse: collapse"> Изменить </a></td>
-            <td><a th:href="@{/tasks/list/delete/{id}(id=${task.getId()})}" style="border: 1px solid gray;
+            <td><a th:href="@{/tasks/list/delete/{id}(id=${task.getId})}" style="border: 1px solid gray;
              border-collapse: collapse; color: red"> Удалить </a></td>
         </tr>
     </table>

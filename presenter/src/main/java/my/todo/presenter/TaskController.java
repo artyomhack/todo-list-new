@@ -80,7 +80,7 @@ public class TaskController {
     }
 
     @GetMapping("/list/delete/{id:[0-9]+}")
-    public ModelAndView deleteListTask( @PathVariable String id ) {
+    public ModelAndView deleteTaskById( @PathVariable String id ) {
         var result = interactor.removeById(Integer.parseInt(id));
         if (result.getData()) {
             return new ModelAndView("redirect:/tasks/list");
@@ -88,6 +88,7 @@ public class TaskController {
 
         return errorPage(HttpStatus.BAD_REQUEST);
     }
+
 
     private ModelAndView showTaskForm( Either<DomainError, Task.Details> task ) {
         var model = new ModelAndView();

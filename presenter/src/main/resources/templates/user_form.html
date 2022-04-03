@@ -4,6 +4,19 @@
     <meta charset="UTF-8">
     <title>User form</title>
     <link type="text/css" rel="stylesheet" href="/static/app.css"/>
+    <style type="text/css">
+        table {
+            margin-top: 20px;
+        }
+        TH {
+            padding: 5px;
+            border: 2px gray solid;
+        }
+        TD {
+            padding: 2px;
+            border: 1px gray solid;
+        }
+    </style>
 </head>
 <body>
 <form method="post">
@@ -23,10 +36,17 @@
         <button type="submit">Сохранить</button>
         <a th:href="@{/users/delete/{id}(id=${id})}" style="color: red; padding: 10px">Удалить</a>
     </div>
-    <div>
-        <tr>
 
-        </tr>
+    <div>
+        <table>
+            <tr><th>Задачи</th></tr>
+            <tr th:each="task:${tasks}">
+                <td th:if="${task} != null" th:text="${task.label}"></td>
+                <td th:if="${task} != null"><a th:href="@{/users/__${id}__/deleteTask/{task.id}(task.id=${task.id})}">
+                    Убрать
+                </a></td>
+            </tr>
+        </table>
     </div>
 </form>
 <form  method="post" th:if="${id} != null" action="#" th:action="@{/users/__${id}__/createTask}" th:object="${id}">
@@ -38,15 +58,6 @@
     </div>
 </form>
 
-<form method="post"  th:if="${id_task!= null}" action="#" th:action="@{/users/__${id}__/createTask}" th:object="${id_task}">
-    <div>
-        <table>
-            <tr th:each="task:${tasksForUser}">
-                <td th:text="${task.getLabel}" style="border: 1px gray solid; border-collapse: collapse"></td>
-            </tr>
-        </table>
-    </div>
-</form>
 <div>
     <p><a href="/users/list" style="font-size: 22px; padding: 5px">User list</a></p>
 </div>

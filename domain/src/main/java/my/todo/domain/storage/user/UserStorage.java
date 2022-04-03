@@ -20,7 +20,9 @@ public interface UserStorage {
 
     boolean removeById(Integer id);
 
-    Optional<User.Details> addTaskToUser(UserRequest.Data userRequest,
+    Optional<User.Details> addTaskToUser(Integer userId,
                                          TaskRequest.Data taskRequest);
+
+    boolean removeTaskForUser(Integer userId, Integer taskId);
 
 }

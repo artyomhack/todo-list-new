@@ -3,7 +3,6 @@ package my.todo.data.user;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import my.todo.data.task.TaskEntity;
-import my.todo.domain.models.task.TaskRequest;
 import my.todo.domain.models.user.User;
 import my.todo.domain.models.user.UserRequest;
 
@@ -56,11 +55,8 @@ public class UserEntity {
         return new User.ListItem(id, fullName);
     }
 
-    public void addTask(TaskRequest.Data request) {
-        var task = TaskEntity.of(request);
-
+    public void addTask(TaskEntity task) {
         this.tasks.add(task);
-        task.getUsers().add(this);
     }
 
     public static UserEntity of(UserRequest.Data request) {

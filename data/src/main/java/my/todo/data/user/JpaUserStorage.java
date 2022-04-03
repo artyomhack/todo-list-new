@@ -1,5 +1,7 @@
 package my.todo.data.user;
 
+import my.todo.data.task.TaskEntity;
+import my.todo.data.task.TaskRepository;
 import my.todo.domain.models.task.TaskRequest;
 import my.todo.domain.models.user.User;
 import my.todo.domain.models.user.UserRequest;
@@ -11,23 +13,25 @@ import java.util.stream.StreamSupport;
 
 public class JpaUserStorage implements UserStorage {
 
-    private final UserRepository repository;
+    private final UserRepository userRepository;
+    private final TaskRepository taskRepository;
 
-    public JpaUserStorage(UserRepository repository) {
-        this.repository = repository;
+    public JpaUserStorage(UserRepository userRepository, TaskRepository taskRepository) {
+        this.userRepository = userRepository;
+        this.taskRepository = taskRepository;
     }
 
     @Override
     public Optional<User.Details> create(UserRequest.Data request) {
 
-        return Optional.of(repository.save(UserEntity.of(request)))
+        return Optional.of(userRepository.save(UserEntity.of(request)))
                 .map(UserEntity::toDetails);
     }
 
     @Override
     public Optional<User.Details> update(Integer id, UserRequest.Data request) {
 
-        return  repository.findById(id).map( it -> {
+        return  userRepository.findById(id).map(it -> {
             var firstName = Optional.of(request.getFirstName()).orElse(it.getFirstName());
 
             var lastName = Optional.of(request.getLastName()).orElse(it.getLastName());
@@ -36,26 +40,26 @@ public class JpaUserStorage implements UserStorage {
 
             var entity = new UserEntity(it.getId(), firstName, lastName, middleName);
 
-            return repository.save(entity);
+            return userRepository.save(entity);
         }).map(UserEntity::toDetails);
     }
 
     @Override
     public List<User.ListItem> fetchAll() {
-        return StreamSupport.stream(repository.findAll().spliterator(), false)
+        return StreamSupport.stream(userRepository.findAll().spliterator(), false)
                 .map(UserEntity::toItem).toList();
     }
 
     @Override
     public Optional<User.Details> fetchById(Integer id) {
-        return repository.findById(id).map(UserEntity::toDetails);
+        return userRepository.findById(id).map(UserEntity::toDetails);
     }
 
     @Override
     public boolean removeById(Integer id) {
 
-        if (repository.existsById(id)) {
-            repository.deleteById(id);
+        if (userRepository.existsById(id)) {
+            userRepository.deleteById(id);
             return true;
         }
 
@@ -63,14 +67,25 @@ public class JpaUserStorage implements UserStorage {
     }
 
     @Override
-    public Optional<User.Details> addTaskToUser(UserRequest.Data userRequest,
+    public Optional<User.Details> addTaskToUser(Integer id,
                                                 TaskRequest.Data taskRequest) {
 
-        var user = repository.save(UserEntity.of(userRequest));
+        return userRepository.findById(id).map( user -> {
+            var task = taskRepository.save(TaskEntity.of(taskRequest));
+            user.addTask(task);
+            return userRepository.save(user).toDetails();
+        });
 
-        user.addTask(taskRequest);
+    }
 
-        return Optional.of(user.toDetails());
+    @Override
+    public boolean removeTaskForUser(Integer userId, Integer taskId) {
+
+        if (userRepository.existsById(userId)) {
+            taskRepository.deleteById(taskId);
+            return true;
+        }
+        return false;
     }
 
 }

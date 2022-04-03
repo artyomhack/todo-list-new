@@ -45,17 +45,25 @@ public class UserInteractor {
                        .orElse( new Either<>( new DomainError.NotFound(), null ) );
     }
 
-    public Either<DomainError, User.Details> addTaskToUser( Integer id, TaskRequest.Data task ) {
-        return repository.fetchById( id )
-                         .map( user -> new UserRequest.Data( user.getId(), user.getFirstName(), user.getMiddleName(),
-                                                             user.getLastName() ) )
-                         .map( request -> addTaskToUser( request, task ) )
-                         .orElse( new Either<>( new DomainError.BadRequest(), null ) );
+
+    public Either<DomainError, User.Details> addTaskToUser( Integer userId, TaskRequest.Data task ) {
+
+        return repository.fetchById( userId )
+                .map( user -> new UserRequest.Data( user.getId(), user.getFirstName(), user.getMiddleName(),
+                        user.getLastName() ))
+                .map(it-> checkAddTaskForUser(userId, task))
+                .orElse( new Either<>( new DomainError.BadRequest(), null ) );
     }
 
-    public Either<DomainError, User.Details> addTaskToUser( UserRequest.Data userRequest,
-                                                            TaskRequest.Data taskRequest ) {
-        return repository.addTaskToUser( userRequest, taskRequest ).map( Either::new )
-                         .orElse( new Either<>( new DomainError.BadRequest(), null ) );
+    private Either<DomainError, User.Details> checkAddTaskForUser(Integer userId, TaskRequest.Data taskRequest) {
+
+        return repository.addTaskToUser( userId, taskRequest ).map( Either::new )
+                .orElse( new Either<>( new DomainError.BadRequest(), null ) );
+    }
+
+    public Either<DomainError, Boolean> removeTaskForUser(Integer userId, Integer taskId) {
+
+        return Optional.of(repository.removeTaskForUser(userId, taskId))
+                .map(Either::new).orElse(new Either<>(new DomainError.BadRequest(), null));
     }
 }
