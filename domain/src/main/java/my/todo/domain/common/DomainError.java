@@ -1,5 +1,9 @@
 package my.todo.domain.common;
 
+import java.util.Collections;
+import java.util.Map;
+import java.util.Objects;
+
 public interface DomainError {
 
     String getName();
@@ -33,6 +37,11 @@ public interface DomainError {
     }
 
     class ValidationError implements DomainError {
+        private final Map<String, String> errors;
+
+        public ValidationError(Map<String, String> errors) {
+            this.errors = errors;
+        }
 
         @Override
         public String getName() {
@@ -42,6 +51,12 @@ public interface DomainError {
         @Override
         public String getMessage() {
             return "Validation error";
+        }
+
+        public Map<String, String> getErrors() {
+            return Objects.isNull(errors) || errors.isEmpty()
+                    ? null
+                    : Collections.unmodifiableMap(errors);
         }
 
     }

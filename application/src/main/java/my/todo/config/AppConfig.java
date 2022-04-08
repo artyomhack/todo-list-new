@@ -11,16 +11,27 @@ import my.todo.domain.storage.user.UserStorage;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+//import javax.validation.Validator;
+import javax.validation.Validation;
+import javax.validation.Validator;
+
+
 @Configuration
 public class AppConfig {
 
     @Bean
-    TaskInteractor taskInteractor(TaskStorage storage) {
-        return new TaskInteractor(storage);
+    Validator getHibernateValidator() {
+        var factory = Validation.buildDefaultValidatorFactory();
+        return factory.getValidator();
     }
 
     @Bean
-    TaskStorage taskStorage(TaskRepository repository) {
+    TaskInteractor getTaskInteractorAndValidator (Validator validator, TaskStorage storage) {
+        return new TaskInteractor(validator, storage);
+    }
+
+    @Bean
+    TaskStorage getTaskStorage(TaskRepository repository) {
         return new JpaTaskStorage(repository);
     }
 

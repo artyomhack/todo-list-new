@@ -57,6 +57,7 @@ public class UserInteractor {
 
     private Either<DomainError, User.Details> checkAddTaskForUser(Integer userId, TaskRequest.Data taskRequest) {
 
+
         return repository.addTaskToUser( userId, taskRequest ).map( Either::new )
                 .orElse( new Either<>( new DomainError.BadRequest(), null ) );
     }

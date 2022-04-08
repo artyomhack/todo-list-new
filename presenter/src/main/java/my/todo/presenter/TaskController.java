@@ -22,8 +22,8 @@ public class TaskController {
 
     private final TaskInteractor interactor;
 
-    public TaskController( TaskInteractor interactor ) {
-        this.interactor = interactor;
+    public TaskController(TaskInteractor interactor, TaskInteractor interactor1) {
+        this.interactor = interactor1;
     }
 
     @GetMapping( "/{id:[0-9]+}" )

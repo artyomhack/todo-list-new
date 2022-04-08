@@ -10,7 +10,10 @@ import my.todo.domain.storage.user.UserInteractor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Objects;
@@ -71,7 +74,7 @@ public class UserController {
     public ModelAndView showList() {
         var data = userInteractor.fetchAll();
 
-        if ( data.hasError() ) {
+        if ( data.hasError()) {
             return errorPage( HttpStatus.BAD_REQUEST );
         }
 
@@ -107,6 +110,7 @@ public class UserController {
     @PostMapping( value = "/{userId:[0-9]+}/createTask", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE )
     public ModelAndView createTaskForUser(@PathVariable String userId, TaskRequest.Data request ) {
         request.setId(null);
+
         var user = userInteractor.addTaskToUser(Integer.parseInt(userId), request);
 
         if (!user.hasError()) {
@@ -150,4 +154,5 @@ public class UserController {
         redirectModel.setViewName( "error_page" );
         return redirectModel;
     }
+
 }

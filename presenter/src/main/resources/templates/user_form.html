@@ -24,7 +24,7 @@
         <p th:text="'ID: ' + ${id}"></p>
     </div>
     <div>
-        <input name="firstName" type="text" class="input_text" th:value="${firstName}" placeholder="First name"/>
+        <input name="firstName" type="text" class="input_text" th:value="${name}" placeholder="First name"/>
     </div>
     <div>
         <input name="middleName" type="text" class="input_text" th:value="${middleName}" placeholder="Middle name"/>
@@ -40,22 +40,24 @@
     <div>
         <table>
             <tr><th>Задачи</th></tr>
-            <tr th:each="task:${tasks}">
-                <td th:if="${task} != null" th:text="${task.label}"></td>
-                <td th:if="${task} != null"><a th:href="@{/users/__${id}__/deleteTask/{task.id}(task.id=${task.id})}">
-                    Убрать
-                </a></td>
+            <tr th:each="task:${tasks}" >
+                <td th:if="${task.label} != null" th:text="${task.label}"></td>
+                <td th:if="${task} != null">
+                    <a th:href="@{/users/__${id}__/deleteTask/{task.id}(task.id=${task.id})}">Убрать</a>
+                </td>
             </tr>
         </table>
     </div>
 </form>
-<form  method="post" th:if="${id} != null" action="#" th:action="@{/users/__${id}__/createTask}" th:object="${id}">
+
+<form  method="post" th:if="${id} != null"  action="#" th:action="@{/users/__${id}__/createTask}" th:object="${id}">
     <div>
-        <input name="label" type="text" class="input_text" th:value="${label}" placeholder="Создать задачу"
-               style="margin-top: 20px">
+        <input name="label" type="text" class="input_text" th:value="${label}"
+               placeholder="Создать задачу" style="margin-top: 20px">
+
         <p style="border: 1px gray solid; width: 175px;">Срок задачи</p>
-        <button type="submit">Добавить</button>
     </div>
+    <input type="submit" value="Добавить">
 </form>
 
 <div>
