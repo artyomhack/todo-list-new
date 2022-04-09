@@ -58,13 +58,14 @@ public class TaskInteractor {
 
 
     public DomainError validateTask(TaskRequest.Data request) {
+
         var validated = validator.validate(request);
         if (!validated.isEmpty()) {
             var errors = validated.stream()
                     .collect(Collectors.toMap(
                             it -> it.getPropertyPath().toString(),
-                            ConstraintViolation::getMessage)
-                    );
+                            ConstraintViolation::getMessage
+                    ));
             return new DomainError.ValidationError(errors);
         }
         return null;

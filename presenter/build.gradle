@@ -3,6 +3,7 @@ apply plugin: 'java-library'
 dependencies {
     implementation(project(":data"))
     implementation(project(":domain"))
+
     api platform("org.springframework.boot:spring-boot-dependencies:$springBootVersion")
     api("org.springframework:spring-webmvc")
     api("org.springframework.boot:spring-boot-starter-thymeleaf")
