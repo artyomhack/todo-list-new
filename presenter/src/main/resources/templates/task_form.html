@@ -8,7 +8,9 @@
 <div>
     <form method="post">
         <div>
-            <input type="text" name="label" th:value="${label}">
+            <input type="text" name="label" th:value="${label}" />
+            <span style="color: red" th:if="${errors?.label != null}"
+                  th:text="${errors.label}"></span>
         </div>
         <div>
             <input type="hidden" name="id" th:value="${id}">

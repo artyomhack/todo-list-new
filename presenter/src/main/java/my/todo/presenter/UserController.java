@@ -123,6 +123,7 @@ public class UserController {
     private ModelAndView showUserForm( Either<DomainError, User.Details> user ) {
         var model = new ModelAndView();
         var data = user.getData();
+        var taskList = taskInteractor.fetchAll().getData();
 
 
         if ( user.hasError()) {
@@ -136,7 +137,7 @@ public class UserController {
             model.getModelMap().addAttribute( "middleName", user.getData().getMiddleName() );
             model.getModelMap().addAttribute( "lastName", user.getData().getLastName() );
             model.getModelMap().addAttribute("tasks", user.getData().getTasks());
-
+            model.getModelMap().addAttribute("task_list", taskList);
         }
 
         model.setViewName( "user_form" );

@@ -2,18 +2,17 @@ package my.todo.domain.models.task;
 
 import lombok.AllArgsConstructor;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
 
 public interface TaskRequest {
 
     @lombok.Data
     @AllArgsConstructor
     class Data implements TaskRequest {
+
         private Integer id;
 
-        @Min(5)
-        @Max(50)
+        @Size(min = 5, max = 50)
         private String label;
 
     }

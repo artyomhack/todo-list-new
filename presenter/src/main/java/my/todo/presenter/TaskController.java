@@ -39,7 +39,7 @@ public class TaskController {
     }
 
     @PostMapping( value = "/", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE )
-    public ModelAndView showCreateTask( TaskRequest.Data request ) {
+    public ModelAndView showCreateTask(TaskRequest.Data request ) {
         var task = interactor.create( request );
 
         if ( task.hasError() || Objects.isNull( task.getData() ) ) {
@@ -50,7 +50,7 @@ public class TaskController {
     }
 
     @PostMapping( value = "/{id:[0-9]+}", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE )
-    public ModelAndView updateTask( @PathVariable String id, TaskRequest.Data request ) {
+    public ModelAndView updateTask(@PathVariable String id, TaskRequest.Data request ) {
         var task = interactor.update( Integer.parseInt( id ), request );
         return showTaskForm( task );
     }
@@ -93,14 +93,21 @@ public class TaskController {
     private ModelAndView showTaskForm( Either<DomainError, Task.Details> task ) {
         var model = new ModelAndView();
         var data = task.getData();
+        var errors = task.getError();
 
         if ( task.hasError() && Objects.isNull( data ) ) {
             return errorPage( HttpStatus.BAD_REQUEST );
         }
 
         if ( Objects.nonNull(data) ) {
+
+            if (task.hasError() && errors instanceof DomainError.ValidationError validationError) {
+                model.getModelMap().addAttribute("errors", validationError.getErrors());
+            }
+
             model.getModelMap().addAttribute( "id", task.getData().getId() );
             model.getModelMap().addAttribute( "label", task.getData().getLabel() );
+
 
         }
 
